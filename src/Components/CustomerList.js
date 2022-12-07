@@ -5,10 +5,14 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import { Button } from "@mui/material";
 import EditCustomer from "./EditCustomer";
 import AddCustomer from "./AddCustomer";
+import TrainingList from "./TrainingList";
 
 export default function CustomerList() {
   const [customers, setCustomers] = useState([]);
-
+  const [value, setValue] = useState('home');
+  const handleTabChange = (event, value) => {
+    setValue(value);
+  }
   const [columnDefs] = useState([
     //{ field: "id", sortable: true, filter: true },
     { field: "firstname", sortable: true, filter: true },
@@ -86,8 +90,8 @@ export default function CustomerList() {
         else alert("Something went wrong when editing");
       })
       .catch((err) => console.error(err));
-  };
-
+  }
+  
   return (
     <div
       className="ag-theme-material"

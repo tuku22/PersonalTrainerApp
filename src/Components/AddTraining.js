@@ -13,7 +13,12 @@ export default function AddTraining(props) {
     date: "",
     duration: "",
     activity: "",
+    customer: props.customerId
   });
+
+  const [customer, setCustomer] = React.useState({
+    name: ""
+  })
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -28,17 +33,27 @@ export default function AddTraining(props) {
     setOpen(false);
   };
 
+  const addTraining = () => {
+    fetch('http://customerrest.herokuapp.com/api/customers')
+    .then(response => response.json())
+    .then(data => setCustomer(data.content.links.href))
+        props.saveTraining(training);
+        handleClose();
+  };
+
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>
         Add Training
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New Training</DialogTitle>
+        <DialogTitle>New Training ({customer.name})</DialogTitle>
         <DialogContent>
           <TextField
             margin="dense"
             label="Date"
+            inputFormat="dd/MM/yyyy HH:mm"
+            mask="__/__/____ __:__"
             value={training.date}
             onChange={(e) => setTraining({ ...training, date: e.target.value })}
             fullWidth

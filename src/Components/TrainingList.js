@@ -5,21 +5,22 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import { Button } from "@mui/material";
 import EditTraining from "./EditTraining";
 import AddTraining from "./AddTraining";
+import moment from 'moment';
+
 
 export default function TrainingList() {
   const [trainings, setTrainings] = useState([]);
 
+
   const [columnDefs] = useState([
-    { field: "id", sortable: true, filter: true },
-    { field: "date", sortable: true, filter: true },
-    { field: "duration", sortable: true, filter: true },
+    { field: "date", sortable: true, filter: true, cellRenderer: (data) => {
+      return moment(data.createdAt).format('DD/MM/YYYY HH:mm')
+    }},
+    { field: "duration", sortable: true, filter: true, },
     { field: "activity", sortable: true, filter: true },
-    {
-      width: 150,
-      cellRenderer: (params) => (
+    { width: 150, cellRenderer: (params) => (
         <EditTraining data={params.data} updateTraining={updateTraining} />
-      ),
-    },
+     ), },
     {
       cellRenderer: (params) => (
         <Button
@@ -34,7 +35,7 @@ export default function TrainingList() {
   ]);
 
   useEffect(() => {
-    getCars();
+    getTrainings();
   }, []);
 
   const getTrainings = () => {
@@ -43,7 +44,7 @@ export default function TrainingList() {
         if (response.ok) return response.json();
         else alert("Something went wrong");
       })
-      .then((data) => setTrainings(data._embedded.cars))
+      .then((data) => setTrainings(data.content))
       .catch((err) => console.error);
   };
 
@@ -54,7 +55,7 @@ export default function TrainingList() {
       body: JSON.stringify(training),
     })
       .then((response) => {
-        if (response.ok) getCars();
+        if (response.ok) getTrainings();
         else alert("Something went wrong when adding a training");
       })
       .catch((err) => console.error(err));
@@ -62,9 +63,9 @@ export default function TrainingList() {
 
   const deleteTraining = (data) => {
     if (window.confirm("Are you sure?")) {
-      fetch(data._links.car.href, { method: "DELETE" })
+      fetch(data._links.training.href, { method: "DELETE" })
         .then((response) => {
-          if (response.ok) getCars();
+          if (response.ok) getTrainings();
           else alert("Something went wrong in deletion");
         })
         .catch((err) => console.error(err));
