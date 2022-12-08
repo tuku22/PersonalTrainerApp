@@ -9,7 +9,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 export default function AddCustomer(props) {
   const [open, setOpen] = React.useState(false);
   const [customer, setCustomer] = React.useState({
-    // id: "",
     firstname: "",
     lastname: "",
     streetaddress: "",

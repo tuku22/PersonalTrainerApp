@@ -22,23 +22,28 @@ export default function EditCustomer(props) {
     setOpen(true);
     console.log(props.data);
     setCustomer({
-      firstname: props.data.firstname,
-      lastname: props.data.lastname,
-      streetaddress: props.data.streetaddress,
-      postcode: props.data.postcode,
-      city: props.data.city,
-      email: props.data.email,
+      firstname: props.customer.firstname,
+      lastname: props.customer.lastname,
+      streetaddress: props.customer.streetaddress,
+      postcode: props.customer.postcode,
+      city: props.customer.city,
+      email: props.customer.email,
+      phone: props.customer.phone
     });
   };
 
   const handleClose = () => {
     setOpen(false);
   };
-
-  const handleSave = () => {
-    props.updatecustomer(customer, props.data._links.customer.href);
-    setOpen(false);
+  
+  const handleInputChange = (e) => {
+    setCustomer({...customer, [e.target.name]: e.target.value})
   };
+
+  const updateCustomer = () => {
+    props.updateCustomer(customer, props.customer.links[0].href);
+    setOpen(false);
+  }
 
   return (
     <div>
@@ -51,65 +56,70 @@ export default function EditCustomer(props) {
           <TextField
             margin="dense"
             label="First name"
+            name="firstname"
             value={customer.firstname}
-            onChange={(e) =>
-              setCustomer({ ...customer, firstname: e.target.value })
-            }
+            onChange={e => handleInputChange(e)}
             fullWidth
             variant="standard"
           />
           <TextField
             margin="dense"
             label="Last name"
+            name="lastname"
             value={customer.lastname}
-            onChange={(e) =>
-              setCustomer({ ...customer, lastname: e.target.value })
-            }
+            onChange={e => handleInputChange(e)}
             fullWidth
             variant="standard"
           />
           <TextField
             margin="dense"
             label="Street address"
+            name="streetaddress"
             value={customer.streetaddress}
-            onChange={(e) =>
-              setCustomer({ ...customer, streetaddress: e.target.value })
-            }
+            onChange={e => handleInputChange(e)}
             fullWidth
             variant="standard"
           />
           <TextField
             margin="dense"
             label="Postcode"
+            name="postcode"
             value={customer.postcode}
-            onChange={(e) =>
-              setCustomer({ ...customer, postcode: e.target.value })
-            }
+            onChange={e => handleInputChange(e)}
             fullWidth
             variant="standard"
           />
           <TextField
             margin="dense"
             label="City"
+            name="city"
             value={customer.city}
-            onChange={(e) => setCustomer({ ...customer, city: e.target.value })}
+            onChange={e => handleInputChange(e)}
             fullWidth
             variant="standard"
           />
           <TextField
             margin="dense"
             label="Email"
+            name="email"
             value={customer.email}
-            onChange={(e) =>
-              setCustomer({ ...customer, email: e.target.value })
-            }
+            onChange={e => handleInputChange(e)}
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            margin="dense"
+            label="Phone"
+            name="phone"
+            value={customer.phone}
+            onChange={e => handleInputChange(e)}
             fullWidth
             variant="standard"
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSave}>Save</Button>
+          <Button onClick={updateCustomer}>Save</Button>
         </DialogActions>
       </Dialog>
     </div>
