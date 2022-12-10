@@ -8,6 +8,7 @@ import Tab from '@mui/material/Tab';
 import React, { useState } from 'react'
 import TrainingList from "./Components/TrainingList";
 import Calendar from "./Components/CalendarTraining";
+import Statistics from "./Components/Statistics";
 
 function App() {
   const [value, setValue] = useState('home');
@@ -22,11 +23,14 @@ function App() {
         <Tab value="customers" label="Customers" />
         <Tab value="training" label="Training" />
         <Tab value="calendar" label="Calendar" />
+        <Tab value="statistics" label="Statistics" />
       </Tabs>
       {value === "home" && <Home />}
       {value === "customers" && <CustomerList />}
       {value === "training" && <TrainingList />}
       {value ==="calendar" && <Calendar />}
+      {value === "statistics" && <Statistics />}
+
       <AppBar position="static">
        
       </AppBar>
